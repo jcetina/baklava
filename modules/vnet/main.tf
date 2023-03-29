@@ -11,5 +11,4 @@ resource "azurerm_subnet" "firewall_subnet" {
   resource_group_name  = azurerm_virtual_network.vnet.resource_group_name
   virtual_network_name = azurerm_virtual_network.vnet.name
   address_prefixes     = var.firewall_subnet
-  tags = var.tags
 }
