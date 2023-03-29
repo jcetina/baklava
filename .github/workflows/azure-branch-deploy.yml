@@ -1,0 +1,89 @@
+name: branch-deploy
+
+on:
+  issue_comment:
+    types: [ created ]
+
+permissions:
+  id-token: write
+  pull-requests: write
+  deployments: write
+  contents: write
+  checks: read
+
+env:
+  WORKING_DIR: "./"
+  ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+
+jobs:
+  branch-deploy:
+    name: "branch deploy"
+    if: ${{ github.event.issue.pull_request }} # only run on pull request comments
+    runs-on: ubuntu-latest
+    environment: production # only used to aquire secrets
+
+    steps:
+      - name: branch-deploy
+        id: branch-deploy
+        uses: github/branch-deploy@v5.0.0
+        with:
+          environment_targets: "production"
+
+      - name: checkout
+        uses: actions/checkout@v3.3.0
+        if: ${{ steps.branch-deploy.outputs.continue == 'true' }}
+        with:
+          ref: ${{ steps.branch-deploy.outputs.ref }}
+      
+      - uses: hashicorp/setup-terraform@633666f66e0061ca3b725c73b2ec20cd13a8fdd1 # pin@v2.0.3
+        if: ${{ steps.branch-deploy.outputs.continue == 'true' }}
+        with:
+          cli_config_credentials_hostname: terraform.githubapp.com
+          cli_config_credentials_token: ${{ secrets.TFE_TOKEN }}
+          terraform_version: 1.2.6
+
+      - name: Terraform init
+        if: ${{ steps.branch-deploy.outputs.continue == 'true' }}
+        run: terraform init
+
+      # .deploy noop logic
+      - name: Terraform plan
+        if: ${{ steps.branch-deploy.outputs.continue == 'true' &&
+          steps.branch-deploy.outputs.noop == 'true' }}
+        run: |
+          set -o pipefail
+          terraform plan -no-color -compact-warnings | tee tfoutput.out
+          TF_FMT=$(grep -v "Refreshing state..." tfoutput.out | grep -v "::")
+          TF_FMT=$(grep -v "Reading..." <<< $TF_FMT | grep -v "::")
+          TF_FMT=$(grep -v "Read complete" <<< $TF_FMT | grep -v "::")
+          TF_FMT="${TF_FMT#*Initializing Terraform configuration...}"
+          TF_FMT="${TF_FMT//'%0A'/$'\n'}"
+          TF_FMT=$(echo "$TF_FMT" | sed '/^╷/d')
+          TF_FMT=$(echo "$TF_FMT" | sed '/^│/d')
+          TF_FMT=$(echo "$TF_FMT" | sed '/^╵/d')
+          TF_FMT="\`\`\`terraform\n${TF_FMT}\n\`\`\`"
+          echo 'DEPLOY_MESSAGE<<EOF' >> $GITHUB_ENV
+          echo "$TF_FMT" >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
+
+      # .deploy logic
+      - name: Terraform apply
+        if: ${{ steps.branch-deploy.outputs.continue == 'true' &&
+          steps.branch-deploy.outputs.noop != 'true' }}
+        run: |
+          set -o pipefail
+          terraform apply -no-color -auto-approve -compact-warnings | tee tfoutput.out
+          TF_FMT=$(grep -v "Refreshing state..." tfoutput.out | grep -v "::")
+          TF_FMT=$(grep -v "Reading..." <<< $TF_FMT | grep -v "::")
+          TF_FMT=$(grep -v "Read complete" <<< $TF_FMT | grep -v "::")
+          TF_FMT="${TF_FMT#*Initializing Terraform configuration...}"
+          TF_FMT="${TF_FMT//'%0A'/$'\n'}"
+          TF_FMT=$(echo "$TF_FMT" | sed '/^╷/d')
+          TF_FMT=$(echo "$TF_FMT" | sed '/^│/d')
+          TF_FMT=$(echo "$TF_FMT" | sed '/^╵/d')
+          TF_FMT="\`\`\`terraform\n${TF_FMT}\n\`\`\`"
+          echo 'DEPLOY_MESSAGE<<EOF' >> $GITHUB_ENV
+          echo "$TF_FMT" >> $GITHUB_ENV
+          echo 'EOF' >> $GITHUB_ENV
