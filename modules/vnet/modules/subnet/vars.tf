@@ -1,8 +1,3 @@
-variable "tags" {
-  type        = map(string)
-  description = "Tags for subnet"
-}
-
 variable "name" {
     type        = string
     description = "Subnet name"
