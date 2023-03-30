@@ -34,3 +34,9 @@ variable "firewall_subnet" {
   type        = list(string)
   description = "Vnet address space"
 }
+
+variable "zones" {
+  type        = list(string)
+  description = "List of availability zones where the Azure Firewall should be deployed"
+  default     = []
+}
