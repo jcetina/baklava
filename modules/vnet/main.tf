@@ -7,11 +7,11 @@ resource "azurerm_virtual_network" "vnet" {
 }
 
 module "subnet" {
-  source               = "./modules/subnet"
-  name                 = "${var.name}-fw-subnet"
-  resource_group_name  = azurerm_virtual_network.vnet.resource_group_name
-  virtual_network_name = var.name
-  address_prefixes     = var.firewall_subnet
+  source              = "./modules/subnet"
+  name                = "AzureFirewallSubnet"
+  resource_group_name = azurerm_virtual_network.vnet.resource_group_name
+  vvnet_name          = var.name
+  address_prefixes    = var.firewall_subnet
 }
 
 module "firewall" {
@@ -19,6 +19,6 @@ module "firewall" {
   name                = var.firewall_name
   resource_group_name = azurerm_virtual_network.vnet.resource_group_name
   location            = azurerm_virtual_network.vnet.location
-  subnet_id           = azurerm_subnet.firewall_subnet.id
+  subnet_id           = module.subnet.id
   zones               = var.zones
 }

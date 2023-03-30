@@ -13,7 +13,7 @@ variable "vnet_name" {
   description = "Parent Vnet name"
 }
 
-variable "subnet" {
+variable "address_prefixes" {
   type        = list(string)
   description = "Vnet address space"
 }
