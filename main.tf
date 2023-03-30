@@ -19,14 +19,14 @@ locals {
 }
 
 module "vnet" {
-  source               = "./modules/vnet"
-  name                 = local.vnet_name
-  location             = local.location
-  address_space        = local.address_space
-  resource_group_name  = data.azurerm_resource_group.rg.name
-  firewall_subnet      = [local.subnets["AzureFirewallSubnet"]]
-  firewall_name        = "my-secure-firewall"
-  nat_gateway_name     = "my-secure-nat-gw"
-  nat_gateway_ip_count = 1
-  nat_gw_idle_timeout  = 4
+  source              = "./modules/vnet"
+  name                = local.vnet_name
+  location            = local.location
+  address_space       = local.address_space
+  resource_group_name = data.azurerm_resource_group.rg.name
+  firewall_subnet     = [local.subnets["AzureFirewallSubnet"]]
+  firewall_name       = "my-secure-firewall"
+  nat_gateway_name    = "my-secure-nat-gw"
+  nat_gw_ip_count     = 1
+  nat_gw_idle_timeout = 4
 }
