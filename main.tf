@@ -6,12 +6,7 @@ locals {
   vnet_name     = "my-secure-vnet"
   location      = "eastus"
   address_space = ["10.0.0.0/16"]
-  #   address_manager = [
-  #     {
-  #       name = "AzureFirewallSubnet"
-  #       newbits = 8
-  #     }
-  #   ]
+
   address_manager = {
     "AzureFirewallSubnet" = {
       newbits = 8
@@ -30,4 +25,5 @@ module "vnet" {
   address_space       = local.address_space
   resource_group_name = data.azurerm_resource_group.rg.name
   firewall_subnet     = [local.subnets["AzureFirewallSubnet"]]
+  firewall_name       = "my-secure-firewall"
 }
