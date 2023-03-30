@@ -49,15 +49,19 @@ variable "nat_gateway_name" {
 variable "nat_gw_ip_count" {
   type        = number
   description = "Number of IP addresses to allocate"
-  condition   = contains([1, 2, 4, 8, 16], var.nat_gw_ip_count)
-  error       = "nat_gw_ip_count must be one of 1, 2, 4, 8, 16"
-  default     = 1
+  validation {
+    condition = contains([1, 2, 4, 8, 16], var.nat_gw_ip_count)
+    error     = "nat_gw_ip_count must be one of 1, 2, 4, 8, 16"
+  }
+  default = 1
 }
 
 variable "nat_gw_idle_timeout" {
   type        = number
   description = "Idle timeout for NAT Gateway"
   default     = 4
-  condition   = var.nat_gw_idle_timeout >= 4 && var.nat_gw_idle_timeout <= 120
-  error       = "nat_gw_idle_timeout must be between 4 and 120"
+  validation {
+    condition = var.nat_gw_idle_timeout >= 4 && var.nat_gw_idle_timeout <= 120
+    error     = "nat_gw_idle_timeout must be between 4 and 120"
+  }
 }

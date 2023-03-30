@@ -17,16 +17,20 @@ variable "sku" {
   type        = string
   description = "NAT gateway sku"
   default     = "Standard"
-  condition   = contains(["Standard"], var.sku)
-  error       = "Only Standard is supported at the moment"
+  validation {
+    condition = contains(["Standard"], var.sku)
+    error     = "Only Standard is supported at the moment"
+  }
 }
 
 variable "ip_count" {
   type        = number
   description = "Number of IP addresses to allocate"
-  condition   = contains([1, 2, 4, 8, 16], var.ip_count)
-  error       = "ip_count must be one of 1, 2, 4, 8, 16"
-  default     = 1
+  validation {
+    condition = contains([1, 2, 4, 8, 16], var.ip_count)
+    error     = "ip_count must be one of 1, 2, 4, 8, 16"
+  }
+  default = 1
 }
 
 variable "tags" {
@@ -46,6 +50,8 @@ variable "idle_timeout" {
   type        = number
   description = "Idle timeout for NAT Gateway"
   default     = 4
-  condition   = var.idle_timeout >= 4 && var.idle_timeout <= 120
-  error       = "idle_timeout must be between 4 and 120"
+  validation {
+    condition = var.idle_timeout >= 4 && var.idle_timeout <= 120
+    error     = "idle_timeout must be between 4 and 120"
+  }
 }
