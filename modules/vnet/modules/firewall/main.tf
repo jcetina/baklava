@@ -15,8 +15,8 @@ resource "azurerm_firewall" "firewall" {
 
 module "ip" {
   source              = "../public_ip"
-  name                = "${azurerm_firewall.firewall.name}-ip"
-  resource_group_name = azurerm_firewall.firewall.resource_group_name
-  location            = azurerm_firewall.firewall.location
+  name                = "${var.name}-ip"
+  resource_group_name = var.resource_group_name
+  location            = var.location
   zones               = var.zones
 }
