@@ -10,7 +10,7 @@ module "subnet" {
   source              = "./modules/subnet"
   name                = "AzureFirewallSubnet"
   resource_group_name = azurerm_virtual_network.vnet.resource_group_name
-  vvnet_name          = var.name
+  vnet_name           = azurerm_virtual_network.vnet.name
   address_prefixes    = var.firewall_subnet
 }
 
