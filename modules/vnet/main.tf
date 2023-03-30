@@ -28,7 +28,7 @@ module "nat_gateway" {
   name                = var.nat_gateway_name
   resource_group_name = azurerm_virtual_network.vnet.resource_group_name
   location            = azurerm_virtual_network.vnet.location
-  ip_count            = var.nat_gateway_ip_count
+  ip_count            = var.nat_gw_ip_count
   zones               = var.zones
   idle_timeout        = var.nat_gw_idle_timeout
 }
