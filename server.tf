@@ -32,7 +32,7 @@ resource "azurerm_linux_virtual_machine" "servers" {
   size                = "Standard_F2"
   admin_username      = "adminuser"
   network_interface_ids = [
-    azurerm_network_interface.server[count.index].id,
+    azurerm_network_interface.servers[count.index].id,
   ]
 
   admin_ssh_key {
