@@ -35,3 +35,16 @@ variable "zones" {
   description = "List of availability zones where the Azure Firewall should be deployed"
   default     = []
 }
+
+variable "policy_id" {
+  type        = string
+  description = "Resource ID of the Azure Firewall Policy to associate with the Azure Firewall"
+  default     = null
+}
+
+variable "tags" {
+  type        = map(string)
+  description = "Tags for FW"
+  default = {
+  }
+}

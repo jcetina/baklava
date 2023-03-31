@@ -65,3 +65,13 @@ variable "nat_gw_idle_timeout" {
     error_message = "nat_gw_idle_timeout must be between 4 and 120"
   }
 }
+
+variable "route_table_name" {
+  type        = string
+  description = "Route table name"
+}
+
+main "policy_name" {
+  type        = string
+  description = "Firewall policy name"
+}

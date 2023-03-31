@@ -21,6 +21,8 @@ module "firewall" {
   location            = azurerm_virtual_network.vnet.location
   subnet_id           = module.subnet.id
   zones               = var.zones
+  policy_id           = azurerm_firewall_policy.policy.id
+  tags                = var.tags
 }
 
 resource "azurerm_subnet_nat_gateway_association" "firewall_association" {
@@ -40,9 +42,15 @@ module "nat_gateway" {
 
 module "route_table" {
   source              = "../route_table"
-  name                = "my-secure-route-table"
+  name                = vars.route_table_name
   resource_group_name = azurerm_virtual_network.vnet.resource_group_name
   location            = azurerm_virtual_network.vnet.location
   firewall_ip         = module.firewall.private_ip
   vnet_address_space  = var.address_space[0]
+}
+
+resource "azurerm_firewall_policy" "policy" {
+  name                = var.policy_name
+  resource_group_name = azurerm_virtual_network.vnet.resource_group_name
+  location            = azurerm_virtual_network.vnet.location
 }

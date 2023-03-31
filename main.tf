@@ -30,6 +30,8 @@ module "vnet" {
   firewall_subnet     = [local.subnets["AzureFirewallSubnet"]]
   firewall_name       = "my-secure-firewall"
   nat_gateway_name    = "my-secure-nat-gw"
+  route_table_name    = "my-secure-route-table"
+  policy_name         = "my-secure-policy"
   nat_gw_ip_count     = 1
   nat_gw_idle_timeout = 4
 }

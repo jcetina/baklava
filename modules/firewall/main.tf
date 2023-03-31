@@ -11,6 +11,10 @@ resource "azurerm_firewall" "firewall" {
     public_ip_address_id = module.ip.id
   }
   zones = length(var.zones) == 0 ? null : var.zones
+
+  firewall_policy_id = var.policy_id
+
+  tags = var.tags
 }
 
 module "ip" {
