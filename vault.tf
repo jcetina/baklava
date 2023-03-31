@@ -28,6 +28,7 @@ resource "azurerm_key_vault_access_policy" "vault_access_policy" {
     "Purge",
     "Recover",
     "Update",
+    "Get",
   ]
 
   secret_permissions = [
