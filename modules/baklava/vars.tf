@@ -71,7 +71,7 @@ variable "route_table_name" {
   description = "Route table name"
 }
 
-main "policy_name" {
+variable "policy_name" {
   type        = string
   description = "Firewall policy name"
 }

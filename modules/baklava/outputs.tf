@@ -13,7 +13,7 @@ output "firewall_id" {
   value       = module.firewall.id
 }
 
-var "policy_id" {
+output "policy_id" {
   description = "The ID of the firewall policy."
   value       = azurerm_firewall_policy.policy.id
 }
