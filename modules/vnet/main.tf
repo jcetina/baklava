@@ -27,14 +27,14 @@ module "firewall" {
   name                = var.firewall_name
   resource_group_name = azurerm_virtual_network.vnet.resource_group_name
   location            = azurerm_virtual_network.vnet.location
-  subnet_id           = module.subnet.id
+  subnet_id           = module.firewall_subnet.id
   zones               = var.zones
   policy_id           = azurerm_firewall_policy.policy.id
   tags                = var.tags
 }
 
 resource "azurerm_subnet_nat_gateway_association" "firewall_association" {
-  subnet_id      = module.subnet.id
+  subnet_id      = module.firewall_subnet.id
   nat_gateway_id = module.nat_gateway.id
 }
 
