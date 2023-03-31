@@ -26,7 +26,7 @@ resource "azurerm_network_interface" "server" {
 resource "azurerm_linux_virtual_machine" "example" {
   name                = "example-machine"
   resource_group_name = data.azurerm_resource_group.rg.name
-  location            = data.azurerm_resource_group.example.location
+  location            = data.azurerm_resource_group.rg.location
   size                = "Standard_F2"
   admin_username      = "adminuser"
   network_interface_ids = [
