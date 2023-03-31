@@ -12,3 +12,8 @@ output "private_ip" {
   description = "The private IP address of the firewall."
   value       = azurerm_firewall.firewall.ip_configuration[0].private_ip_address
 }
+
+output "name" {
+  description = "The name of the firewall."
+  value       = azurerm_firewall.firewall.name
+}

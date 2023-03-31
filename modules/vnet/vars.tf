@@ -78,5 +78,5 @@ variable "policy_name" {
 
 variable "bastion_subnet" {
   type        = list(string)
-  description = "Bastion subnet"  
+  description = "Bastion subnet"
 }

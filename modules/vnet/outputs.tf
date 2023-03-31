@@ -19,6 +19,11 @@ output "policy_id" {
 }
 
 output "name" {
-  description = "The name of the firewall."
+  description = "The name of the vnet."
   value       = azurerm_virtual_network.vnet.name
+}
+
+output "firewall_name" {
+  description = "The name of the firewall."
+  value       = module.firewall.name
 }

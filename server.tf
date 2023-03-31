@@ -54,3 +54,43 @@ resource "azurerm_linux_virtual_machine" "servers" {
 
   count = 2
 }
+
+resource "azurerm_firewall_application_rule_collection" "server_app_rule_collection" {
+  name                = "server_app_rule_collection"
+  azure_firewall_name = module.vnet.firewall_name
+  resource_group_name = data.azurerm_resource_group.rg.name
+  priority            = 101
+  action              = "Allow"
+
+  rule {
+    name = "google"
+
+    source_addresses = local.address_space
+
+    target_fqdns = [
+      "*.google.com",
+      "google.com"
+    ]
+
+    protocol {
+      port = "443"
+      type = "Https"
+    }
+  }
+
+  rule {
+    name = "github"
+
+    source_addresses = local.address_space
+
+    target_fqdns = [
+      "*.github.com",
+      "github.com"
+    ]
+
+    protocol {
+      port = "443"
+      type = "Https"
+    }
+  }
+}

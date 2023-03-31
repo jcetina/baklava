@@ -9,15 +9,15 @@ locals {
 
   address_manager = [
     {
-      name = "AzureFirewallSubnet"
+      name    = "AzureFirewallSubnet"
       newbits = 8
     },
     {
-      name = "ServerSubnet"
+      name    = "ServerSubnet"
       newbits = 8
     },
     {
-      name = "AzureBastionSubnet"
+      name    = "AzureBastionSubnet"
       newbits = 8
     }
   ]
