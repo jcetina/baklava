@@ -55,42 +55,41 @@ resource "azurerm_linux_virtual_machine" "servers" {
   count = 2
 }
 
-resource "azurerm_firewall_application_rule_collection" "server_app_rule_collection" {
-  name                = "server_app_rule_collection"
-  azure_firewall_name = module.vnet.firewall_name
-  resource_group_name = data.azurerm_resource_group.rg.name
-  priority            = 101
-  action              = "Allow"
-
-  rule {
-    name = "google"
-
-    source_addresses = [ local.subnets["ServerSubnet"] ]
-
-    target_fqdns = [
-      "*.google.com",
-      "google.com"
-    ]
-
-    protocol {
-      port = "443"
-      type = "Https"
+resource "azurerm_firewall_policy_rule_collection_group" "rule_group_collection" {
+  name               = "servers-rule-group-collection"
+  firewall_policy_id = module.vnet.policy_id
+  priority           = 500
+  application_rule_collection {
+    name     = "app_rule_allowed"
+    priority = 101
+    action   = "Allow"
+    rule {
+      name = "google"
+      protocols {
+        type = "Https"
+        port = 443
+      }
+      source_addresses  = [ local.subnets["ServerSubnet"] ]
+      destination_fqdns = ["*.google.com", "google.com"]
+    }
+    rule {
+      name = "github"
+      protocols {
+        type = "Https"
+        port = 443
+      }
+      source_addresses  = [ local.subnets["ServerSubnet"] ]
+      destination_fqdns = ["*.github.com", "github.com"]
+    }
+    rule {
+      name = "ifconfig-dot-me"
+      protocols {
+        type = "Https"
+        port = 443
+      }
+      source_addresses  = [ local.subnets["ServerSubnet"] ]
+      destination_fqdns = ["*.ifconfig.me", "ifconfig.me"]
     }
   }
 
-  rule {
-    name = "github"
-
-    source_addresses = [ local.subnets["ServerSubnet"] ]
-
-    target_fqdns = [
-      "*.github.com",
-      "github.com"
-    ]
-
-    protocol {
-      port = "443"
-      type = "Https"
-    }
-  }
 }
