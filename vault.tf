@@ -1,5 +1,5 @@
 resource "azurerm_key_vault" "vault" {
-  name                       = "bastion-vault-${substr(sha1(random_id.bastion_ssh_key.hex), 0, 8)}}"
+  name                       = "bastion-vault-${substr(sha1(azurerm_key_vault_key.bastion_ssh_key.public_key_openssh), 0, 8)}}"
   location                   = data.azurerm_resource_group.rg.location
   resource_group_name        = data.azurerm_resource_group.rg.name
   tenant_id                  = data.azurerm_client_config.current.tenant_id
