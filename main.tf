@@ -1,7 +1,3 @@
-data "azurerm_resource_group" "rg" {
-  name = "org-jcetina-repo-baklava-rg"
-}
-
 locals {
   vnet_name     = "my-secure-vnet"
   location      = "eastus"

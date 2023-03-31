@@ -21,5 +21,10 @@ terraform {
 # Configure the Microsoft Azure Provider
 provider "azurerm" {
   use_oidc = true
-  features {}
+  features {
+    key_vault {
+      purge_soft_deleted_keys_on_destroy = false
+      recover_soft_deleted_keys          = true
+    }
+  }
 }
