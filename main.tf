@@ -35,7 +35,7 @@ module "vnet" {
 }
 
 module "server_subnet" {
-  source              = "./modules/baklava/subnet"
+  source              = "./modules/subnet"
   name                = "ServerSubnet"
   resource_group_name = module.vnet.resource_group_name
   vnet_name           = module.vnet.name
