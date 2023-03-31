@@ -11,8 +11,8 @@ resource "azurerm_subnet_route_table_association" "server_subnet_association" {
   route_table_id = module.vnet.route_table_id
 }
 
-resource "azurerm_network_interface" "server" {
-  name                = "server-nic"
+resource "azurerm_network_interface" "servers" {
+  name                = "server-nic-${count.index}"
   location            = data.azurerm_resource_group.rg.location
   resource_group_name = data.azurerm_resource_group.rg.name
 
@@ -21,16 +21,18 @@ resource "azurerm_network_interface" "server" {
     subnet_id                     = module.server_subnet.id
     private_ip_address_allocation = "Dynamic"
   }
+
+  count = 2
 }
 
-resource "azurerm_linux_virtual_machine" "examserverple" {
-  name                = "server"
+resource "azurerm_linux_virtual_machine" "servers" {
+  name                = "server-${count.index}"
   resource_group_name = data.azurerm_resource_group.rg.name
   location            = data.azurerm_resource_group.rg.location
   size                = "Standard_F2"
   admin_username      = "adminuser"
   network_interface_ids = [
-    azurerm_network_interface.server.id,
+    azurerm_network_interface.server[count.index].id,
   ]
 
   admin_ssh_key {
@@ -49,4 +51,6 @@ resource "azurerm_linux_virtual_machine" "examserverple" {
     sku       = "20_04-lts"
     version   = "latest"
   }
+
+  count = 2
 }

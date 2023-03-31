@@ -75,3 +75,8 @@ variable "policy_name" {
   type        = string
   description = "Firewall policy name"
 }
+
+variable "bastion_subnet" {
+  type        = list(string)
+  description = "Bastion subnet"  
+}

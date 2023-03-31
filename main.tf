@@ -14,6 +14,9 @@ locals {
     "ServerSubnet" = {
       newbits = 8
     }
+    "AzureBastionSubnet" = {
+      newbits = 8
+    }
   }
 
   listified_address_manager = [for k, v in local.address_manager : { name = k, newbits = v.newbits }]
@@ -22,12 +25,13 @@ locals {
 }
 
 module "vnet" {
-  source              = "./modules/baklava"
+  source              = "./modules/vnet"
   name                = local.vnet_name
   location            = local.location
   address_space       = local.address_space
   resource_group_name = data.azurerm_resource_group.rg.name
   firewall_subnet     = [local.subnets["AzureFirewallSubnet"]]
+  bastion_subnet      = [local.subnets["AzureBastionSubnet"]]
   firewall_name       = "my-secure-firewall"
   nat_gateway_name    = "my-secure-nat-gw"
   route_table_name    = "my-secure-route-table"
