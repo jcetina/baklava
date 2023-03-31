@@ -74,8 +74,8 @@ module "bastion_ip" {
 
 resource "azurerm_bastion_host" "bastion" {
   name                = "${azurerm_virtual_network.vnet.name}-bastion"
-  location            = azurerm_virtual_network.vnet.resource_group_name
-  resource_group_name = azurerm_virtual_network.vnet.location
+  location            = azurerm_virtual_network.vnet.location
+  resource_group_name = azurerm_virtual_network.vnet.resource_group_name
 
   ip_configuration {
     name                 = "bastion-config"
