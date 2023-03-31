@@ -42,7 +42,7 @@ module "nat_gateway" {
 
 module "route_table" {
   source              = "../route_table"
-  name                = vars.route_table_name
+  name                = var.route_table_name
   resource_group_name = azurerm_virtual_network.vnet.resource_group_name
   location            = azurerm_virtual_network.vnet.location
   firewall_ip         = module.firewall.private_ip
