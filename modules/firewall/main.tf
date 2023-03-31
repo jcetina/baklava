@@ -12,6 +12,10 @@ resource "azurerm_firewall" "firewall" {
   }
   zones = length(var.zones) == 0 ? null : var.zones
 
+  dns {
+    proxy_enabled = true
+  }
+
   firewall_policy_id = var.policy_id
 
   tags = var.tags

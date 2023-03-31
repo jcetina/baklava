@@ -69,7 +69,7 @@ resource "azurerm_firewall_policy_rule_collection_group" "rule_group_collection"
         type = "Https"
         port = 443
       }
-      source_addresses  = [ local.subnets["ServerSubnet"] ]
+      source_addresses  = [local.subnets["ServerSubnet"]]
       destination_fqdns = ["*.google.com", "google.com"]
     }
     rule {
@@ -78,7 +78,7 @@ resource "azurerm_firewall_policy_rule_collection_group" "rule_group_collection"
         type = "Https"
         port = 443
       }
-      source_addresses  = [ local.subnets["ServerSubnet"] ]
+      source_addresses  = [local.subnets["ServerSubnet"]]
       destination_fqdns = ["*.github.com", "github.com"]
     }
     rule {
@@ -87,7 +87,7 @@ resource "azurerm_firewall_policy_rule_collection_group" "rule_group_collection"
         type = "Https"
         port = 443
       }
-      source_addresses  = [ local.subnets["ServerSubnet"] ]
+      source_addresses  = [local.subnets["ServerSubnet"]]
       destination_fqdns = ["*.ifconfig.me", "ifconfig.me"]
     }
   }
