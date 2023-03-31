@@ -65,7 +65,7 @@ resource "azurerm_firewall_application_rule_collection" "server_app_rule_collect
   rule {
     name = "google"
 
-    source_addresses = local.address_space
+    source_addresses = [ local.subnets["ServerSubnet"] ]
 
     target_fqdns = [
       "*.google.com",
@@ -81,7 +81,7 @@ resource "azurerm_firewall_application_rule_collection" "server_app_rule_collect
   rule {
     name = "github"
 
-    source_addresses = local.address_space
+    source_addresses = [ local.subnets["ServerSubnet"] ]
 
     target_fqdns = [
       "*.github.com",
