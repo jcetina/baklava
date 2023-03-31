@@ -11,6 +11,9 @@ locals {
     "AzureFirewallSubnet" = {
       newbits = 8
     }
+    "ServerSubnet" = {
+      newbits = 8
+    }
   }
 
   listified_address_manager = [for k, v in local.address_manager : { name = k, newbits = v.newbits }]
