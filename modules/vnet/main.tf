@@ -7,7 +7,7 @@ resource "azurerm_virtual_network" "vnet" {
 }
 
 module "subnet" {
-  source              = ".,/modules/subnet"
+  source              = "../modules/subnet"
   name                = "AzureFirewallSubnet"
   resource_group_name = azurerm_virtual_network.vnet.resource_group_name
   vnet_name           = azurerm_virtual_network.vnet.name
@@ -15,7 +15,7 @@ module "subnet" {
 }
 
 module "firewall" {
-  source              = ".,/modules/firewall"
+  source              = "../modules/firewall"
   name                = var.firewall_name
   resource_group_name = azurerm_virtual_network.vnet.resource_group_name
   location            = azurerm_virtual_network.vnet.location
@@ -39,7 +39,7 @@ module "nat_gateway" {
 }
 
 module "route_table" {
-  source              = ".,/modules/route_table"
+  source              = "../modules/route_table"
   name                = "my-secure-route-table"
   resource_group_name = azurerm_virtual_network.vnet.resource_group_name
   location            = azurerm_virtual_network.vnet.location
