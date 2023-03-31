@@ -44,5 +44,5 @@ module "route_table" {
   resource_group_name = azurerm_virtual_network.vnet.resource_group_name
   location            = azurerm_virtual_network.vnet.location
   firewall_ip         = module.firewall.private_ip
-  vnet_address_space  = var.address_space
+  vnet_address_space  = var.address_space[0]
 }

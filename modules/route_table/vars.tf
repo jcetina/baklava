@@ -26,6 +26,6 @@ variable "firewall_ip" {
 }
 
 variable "vnet_address_space" {
-  type        = list(string)
+  type        = string
   description = "Vnet address space"
 }

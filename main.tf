@@ -22,7 +22,7 @@ locals {
 }
 
 module "vnet" {
-  source              = "./modules/vnet"
+  source              = "./modules/baklava"
   name                = local.vnet_name
   location            = local.location
   address_space       = local.address_space
@@ -32,4 +32,17 @@ module "vnet" {
   nat_gateway_name    = "my-secure-nat-gw"
   nat_gw_ip_count     = 1
   nat_gw_idle_timeout = 4
+}
+
+module "server_subnet" {
+  source              = "./modules/baklava/subnet"
+  name                = "ServerSubnet"
+  resource_group_name = module.vnet.resource_group_name
+  vnet_name           = module.vnet.name
+  address_prefixes    = [local.subnets["ServerSubnet"]]
+}
+
+resource "azurerm_subnet_route_table_association" "server_subnet_association" {
+  subnet_id      = module.server_subnet.id
+  route_table_id = module.vnet.route_table_id
 }

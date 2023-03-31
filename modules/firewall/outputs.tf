@@ -5,7 +5,7 @@ output "id" {
 
 output "public_ip" {
   description = "The public IP address of the firewall."
-  value       = module.ip.public_ip
+  value       = module.ip.address
 }
 
 output "private_ip" {

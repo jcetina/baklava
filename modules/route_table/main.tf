@@ -11,9 +11,8 @@ resource "azurerm_route_table" "route_table" {
   }
 
   route {
-    for_each       = range(length(var.vnet_address_space))
-    name           = "VnetRoute${each.key}}"
-    address_prefix = var.vnet_address_space[each.key]
+    name           = "VnetRoute"
+    address_prefix = var.vnet_address_space
     next_hop_type  = "VnetLocal"
   }
 
