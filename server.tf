@@ -12,7 +12,7 @@ resource "azurerm_subnet_route_table_association" "server_subnet_association" {
 }
 
 resource "azurerm_network_interface" "server" {
-  name                = "example-nic"
+  name                = "server-nic"
   location            = data.azurerm_resource_group.rg.location
   resource_group_name = data.azurerm_resource_group.rg.name
 
@@ -23,14 +23,14 @@ resource "azurerm_network_interface" "server" {
   }
 }
 
-resource "azurerm_linux_virtual_machine" "example" {
-  name                = "example-machine"
+resource "azurerm_linux_virtual_machine" "examserverple" {
+  name                = "server"
   resource_group_name = data.azurerm_resource_group.rg.name
   location            = data.azurerm_resource_group.rg.location
   size                = "Standard_F2"
   admin_username      = "adminuser"
   network_interface_ids = [
-    azurerm_network_interface.example.id,
+    azurerm_network_interface.server.id,
   ]
 
   admin_ssh_key {
