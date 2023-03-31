@@ -5,7 +5,7 @@ resource "azurerm_route_table" "route_table" {
 
   route {
     name                   = "ToFirewall"
-    address_prefix         = "0.0.0.0"
+    address_prefix         = "0.0.0.0/0"
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = var.firewall_ip
   }
