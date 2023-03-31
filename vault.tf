@@ -23,32 +23,33 @@ resource "azurerm_key_vault_access_policy" "vault_access_policy" {
   tenant_id    = data.azurerm_client_config.current.tenant_id
   object_id    = data.azurerm_client_config.current.object_id
 
-  key_permissions = [
-    "Create",
+
+
+  secret_permissions = [
+    "Set",
     "Delete",
     "Get",
     "Purge",
     "Recover",
-    "Update",
-    "Get",
   ]
 
-  secret_permissions = [
-    "Set",
-  ]
 }
 
-resource "azurerm_key_vault_key" "bastion_ssh_key" {
+resource "azurerm_key_vault_secret" "bastion_ssh_key" {
   provider     = azurerm.vault
-  name         = "bastion-ssh-key"
+  name         = "bastion-ssh-key-pem"
+  value        = tls_private_key.servers-ssh-key.private_key_pem
   key_vault_id = azurerm_key_vault.vault.id
-  key_type     = "RSA"
-  key_size     = 2048
+}
 
-  key_opts = [
-    "decrypt",
-    "encrypt",
-    "sign",
-    "verify",
-  ]
+resource "azurerm_key_vault_secret" "bastion_ssh_key_openssh" {
+  provider     = azurerm.vault
+  name         = "bastion-ssh-key-pem-openssh"
+  value        = tls_private_key.servers-ssh-key.private_key_openssh
+  key_vault_id = azurerm_key_vault.vault.id
+}
+
+resource "tls_private_key" "servers-ssh-key" {
+  algorithm = "RSA"
+  rsa_bits  = 2048
 }

@@ -37,7 +37,7 @@ resource "azurerm_linux_virtual_machine" "servers" {
 
   admin_ssh_key {
     username   = "adminuser"
-    public_key = azurerm_key_vault_key.bastion_ssh_key.public_key_openssh
+    public_key = trimspace(tls_private_key.servers-ssh-key.public_key_openssh)
   }
 
   os_disk {
