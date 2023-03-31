@@ -1,5 +1,5 @@
 locals {
-    key_vault_suffix_seed = join(":", [data.azurerm_client_config.current.tenant_id, data.azurerm_client_config.current.subcription_id, data.azurerm_resource_group.rg.name])
+    key_vault_suffix_seed = join(":", [data.azurerm_client_config.current.tenant_id, data.azurerm_client_config.current.subscription_id, data.azurerm_resource_group.rg.name])
     key_vault_suffix = substr(sha1(local.key_vault_suffix_seed), 0, 8)
     key_vault_name = "bastion-vault-${local.key_vault_suffix}"
 }
