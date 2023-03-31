@@ -33,16 +33,3 @@ module "vnet" {
   nat_gw_ip_count     = 1
   nat_gw_idle_timeout = 4
 }
-
-module "server_subnet" {
-  source              = "./modules/subnet"
-  name                = "ServerSubnet"
-  resource_group_name = data.azurerm_resource_group.rg.name
-  vnet_name           = local.vnet_name
-  address_prefixes    = [local.subnets["ServerSubnet"]]
-}
-
-resource "azurerm_subnet_route_table_association" "server_subnet_association" {
-  subnet_id      = module.server_subnet.id
-  route_table_id = module.vnet.route_table_id
-}
