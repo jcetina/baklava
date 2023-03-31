@@ -61,6 +61,10 @@ resource "azurerm_firewall_policy" "policy" {
   name                = var.policy_name
   resource_group_name = azurerm_virtual_network.vnet.resource_group_name
   location            = azurerm_virtual_network.vnet.location
+
+  dns {
+    proxy_enabled = true
+  }
 }
 
 module "bastion_ip" {
