@@ -4,7 +4,8 @@ resource "azurerm_virtual_network" "vnet" {
   resource_group_name = var.resource_group_name
   address_space       = var.address_space
   # dns_servers         = [for subnet in var.firewall_subnet : cidrhost(subnet, 4)]
-  tags                = var.tags
+  dns_servers = []
+  tags        = var.tags
 }
 
 module "firewall_subnet" {
