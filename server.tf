@@ -2,7 +2,7 @@ module "server_subnet" {
   source              = "./modules/subnet"
   name                = "ServerSubnet"
   resource_group_name = data.azurerm_resource_group.rg.name
-  vnet_name           = local.vnet_name
+  vnet_name           = module.vnet.name
   address_prefixes    = [local.subnets["ServerSubnet"]]
 }
 

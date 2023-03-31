@@ -17,3 +17,8 @@ output "policy_id" {
   description = "The ID of the firewall policy."
   value       = azurerm_firewall_policy.policy.id
 }
+
+output "name" {
+  description = "The name of the firewall."
+  value       = azurerm_virtual_network.vnet.name
+}
