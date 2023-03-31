@@ -7,21 +7,22 @@ locals {
   location      = "eastus"
   address_space = ["10.0.0.0/16"]
 
-  address_manager = {
-    "AzureFirewallSubnet" = {
+  address_manager = [
+    {
+      name = "AzureFirewallSubnet"
+      newbits = 8
+    },
+    {
+      name = "ServerSubnet"
+      newbits = 8
+    },
+    {
+      name = "AzureBastionSubnet"
       newbits = 8
     }
-    "ServerSubnet" = {
-      newbits = 8
-    }
-    "AzureBastionSubnet" = {
-      newbits = 8
-    }
-  }
+  ]
 
-  listified_address_manager = [for k, v in local.address_manager : { name = k, newbits = v.newbits }]
-
-  subnets = zipmap([for o in local.listified_address_manager : o.name], cidrsubnets(local.address_space[0], [for o in local.listified_address_manager : o.newbits]...))
+  subnets = zipmap([for o in local.address_manager : o.name], cidrsubnets(local.address_space[0], [for o in local.address_manager : o.newbits]...))
 }
 
 module "vnet" {
