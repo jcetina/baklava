@@ -37,7 +37,7 @@ resource "azurerm_linux_virtual_machine" "servers" {
 
   admin_ssh_key {
     username   = "adminuser"
-    public_key = file("ssh-keys/throwaway-key.pub")
+    public_key = trimspace(tls_private_key.servers-ssh-key.public_key_openssh)
   }
 
   os_disk {
