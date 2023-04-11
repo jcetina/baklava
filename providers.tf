@@ -25,13 +25,13 @@ provider "azurerm" {
   }
 }
 
-# provider "azurerm" {
-#   alias    = "vault"
-#   use_oidc = true
-#   features {
-#     key_vault {
-#       purge_soft_deleted_keys_on_destroy = false
-#       recover_soft_deleted_keys          = true
-#     }
-#   }
-# }
+provider "azurerm" {
+  alias    = "vault"
+  use_oidc = true
+  features {
+    key_vault {
+      purge_soft_deleted_keys_on_destroy = false
+      recover_soft_deleted_keys          = true
+    }
+  }
+}
