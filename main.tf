@@ -34,9 +34,10 @@ locals {
 
 
 module "eastus" {
+  for_each = local.subnets
   source = "./modules/azure-internal"
-  vnet_location = "eastus"
+  vnet_location = each.key
   vnet_rg = data.azurerm_resource_group.rg.name
-  cidr = local.address_manager["eastus"].address_space
-  gateway_subnet_prefixes = [local.subnets["eastus"]["GatewaySubnet"]]
+  cidr = local.address_manager[each.key].address_space
+  gateway_subnet_prefixes = [each.value["GatewaySubnet"]]
 }
