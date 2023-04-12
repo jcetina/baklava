@@ -5,7 +5,7 @@ locals {
       subnet_layout = [
         {
           name    = "GatewaySubnet"
-          newbits = 12
+          newbits = 11
         },
         {
           name    = "ServerSubnet"
@@ -18,7 +18,7 @@ locals {
       subnet_layout = [
         {
           name    = "GatewaySubnet"
-          newbits = 12
+          newbits = 11
         },
         {
           name    = "ServerSubnet"
