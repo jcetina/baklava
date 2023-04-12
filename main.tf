@@ -80,5 +80,4 @@ module "west-vms" {
   vm_name          = "west-vm-${count.index}"
   ssh_key          = file("./ssh-keys/throwaway-key.pub")
   create_public_ip = true
-
 }
