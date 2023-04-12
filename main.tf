@@ -71,13 +71,24 @@ resource "azurerm_virtual_network_gateway_connection" "west_east" {
   shared_key = "4-v3ry-53cr37-1p53c-5h4r3d-k3y"
 }
 
-module "west-vms" {
+module "westus2-vms" {
   count            = 1
   source           = "./modules/vm"
   location         = "westus2"
   rg_name          = data.azurerm_resource_group.rg.name
   subnet_id        = module.sites["westus2"].vm_subnet_id
-  vm_name          = "west-vm-${count.index}"
-  ssh_key          = file("./ssh-keys/throwaway-key.pub")
+  vm_name          = "westus2-vm-${count.index}"
+  ssh_key          = file("./ssh-keys/disposable-key.pub")
+  create_public_ip = true
+}
+
+module "eastus2-vms" {
+  count            = 1
+  source           = "./modules/vm"
+  location         = "eastus2"
+  rg_name          = data.azurerm_resource_group.rg.name
+  subnet_id        = module.sites["eastus2"].vm_subnet_id
+  vm_name          = "eastus2-vm-${count.index}"
+  ssh_key          = file("./ssh-keys/disposable-key.pub")
   create_public_ip = true
 }
