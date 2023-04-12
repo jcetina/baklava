@@ -80,6 +80,7 @@ module "westus2-vms" {
   vm_name          = "westus2-vm-${count.index}"
   ssh_key          = file("./ssh-keys/disposable-key.pub")
   create_public_ip = true
+  zones            = ["1", "2", "3"]
 }
 
 module "eastus2-vms" {
@@ -91,4 +92,5 @@ module "eastus2-vms" {
   vm_name          = "eastus2-vm-${count.index}"
   ssh_key          = file("./ssh-keys/disposable-key.pub")
   create_public_ip = true
+  zones            = ["1", "2", "3"]
 }
