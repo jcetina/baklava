@@ -18,7 +18,7 @@ resource "azurerm_subnet" "gateway" {
 resource "azurerm_public_ip" "gateway" {
   name                = "${azurerm_virtual_network.vnet.name}-vgw-pip"
   resource_group_name = var.vnet_rg
-  location            = var.region
+  location            = var.vnet_location
 
   # The configuration of the public IP resource determines whether the gateway is zone-redundant, or zonal.
   # A Standard SKU without specifying an availability zone allows the gateway to be zone-redundant and
@@ -31,7 +31,7 @@ resource "azurerm_public_ip" "gateway" {
 resource "azurerm_virtual_network_gateway" "gateway" {
   name                = "${azurerm_virtual_network.vnet.name}-vgw"
   resource_group_name = var.vnet_rg
-  location            = var.region
+  location            = var.vnet_location
 
   type       = "Vpn"
   sku        = "VpnGw2AZ"
