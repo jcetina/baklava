@@ -70,3 +70,15 @@ resource "azurerm_virtual_network_gateway_connection" "west_east" {
 
   shared_key = "4-v3ry-53cr37-1p53c-5h4r3d-k3y"
 }
+
+module "west-vms" {
+  count            = 1
+  source           = "./modules/vm"
+  location         = "westus2"
+  rg_name          = data.azurerm_resource_group.rg.name
+  subnet_id        = module.sites["westus2"].vm_subnet_id
+  vm_name          = "west-vm-${count.index}"
+  ssh_key          = file("./ssh-keys/throwaway-key.pub")
+  create_public_ip = true
+
+}
