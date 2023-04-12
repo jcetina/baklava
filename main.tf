@@ -1,6 +1,6 @@
 locals {
   address_manager = {
-    "eastus" = {
+    "eastus2" = {
       address_space = ["10.0.0.0/16"],
       subnet_layout = [
         {
@@ -13,7 +13,7 @@ locals {
         }
       ]
     },
-    "westus" = {
+    "westus2" = {
       address_space = ["10.1.0.0/16"],
       subnet_layout = [
         {
@@ -44,12 +44,12 @@ module "sites" {
 
 resource "azurerm_virtual_network_gateway_connection" "east_west" {
   name                = "east-west-connection"
-  location            = "eastus"
+  location            = "eastus2"
   resource_group_name = data.azurerm_resource_group.rg.name
 
   type                       = "Vnet2Vnet"
-  virtual_network_gateway_id      = module.sites["eastus"].gateway_id
-  peer_virtual_network_gateway_id = module.sites["westus"].gateway_id
+  virtual_network_gateway_id      = module.sites["eastus2"].gateway_id
+  peer_virtual_network_gateway_id = module.sites["westus2"].gateway_id
 
 
   shared_key = "4-v3ry-53cr37-1p53c-5h4r3d-k3y"
@@ -57,12 +57,12 @@ resource "azurerm_virtual_network_gateway_connection" "east_west" {
 
 resource "azurerm_virtual_network_gateway_connection" "west_east" {
   name                = "west-east-connection"
-  location            = "westus"
+  location            = "westus2"
   resource_group_name = data.azurerm_resource_group.rg.name
 
   type                       = "Vnet2Vnet"
-  virtual_network_gateway_id      = module.sites["westus"].gateway_id
-  peer_virtual_network_gateway_id = module.sites["eastus"].gateway_id
+  virtual_network_gateway_id      = module.sites["westus2"].gateway_id
+  peer_virtual_network_gateway_id = module.sites["eastus2"].gateway_id
 
 
   shared_key = "4-v3ry-53cr37-1p53c-5h4r3d-k3y"
