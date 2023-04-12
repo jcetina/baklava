@@ -46,5 +46,4 @@ resource "azurerm_public_ip" "public_ip" {
   location            = var.location
   allocation_method   = "Static"
   sku                 = "Standard"
-  zones               = length(var.zones) == 0 ? null : var.zones
 }
