@@ -40,7 +40,7 @@ module "sites" {
   rg_name                 = data.azurerm_resource_group.rg.name
   cidr                    = local.address_manager[each.key].address_space
   gateway_subnet_prefixes = [each.value["GatewaySubnet"]]
-  server_subnet_prefixes  = [each.value["VmSubnet"]]
+  vm_subnet_prefixes      = [each.value["VmSubnet"]]
 }
 
 
