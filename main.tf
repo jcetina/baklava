@@ -33,11 +33,37 @@ locals {
 }
 
 
-module "eastus" {
+module "sites" {
   for_each = local.subnets
   source = "./modules/azure-internal"
   vnet_location = each.key
   vnet_rg = data.azurerm_resource_group.rg.name
   cidr = local.address_manager[each.key].address_space
   gateway_subnet_prefixes = [each.value["GatewaySubnet"]]
+}
+
+resource "azurerm_virtual_network_gateway_connection" "east_west" {
+  name                = "east-west-connection"
+  location            = "eastus"
+  resource_group_name = data.azurerm_resource_group.rg.name
+
+  type                       = "Vnet2Vnet"
+  virtual_network_gateway_id      = module.sites["eastus"].gateway_id
+  peer_virtual_network_gateway_id = module.sites["westus"].gateway_id
+
+
+  shared_key = "4-v3ry-53cr37-1p53c-5h4r3d-k3y"
+}
+
+resource "azurerm_virtual_network_gateway_connection" "west_east" {
+  name                = "west-east-connection"
+  location            = "westus"
+  resource_group_name = data.azurerm_resource_group.rg.name
+
+  type                       = "Vnet2Vnet"
+  virtual_network_gateway_id      = module.sites["westus"].gateway_id
+  peer_virtual_network_gateway_id = module.sites["eastus"].gateway_id
+
+
+  shared_key = "4-v3ry-53cr37-1p53c-5h4r3d-k3y"
 }
