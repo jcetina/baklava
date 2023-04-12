@@ -8,7 +8,7 @@ locals {
           newbits = 11
         },
         {
-          name    = "ServerSubnet"
+          name    = "VmSubnet"
           newbits = 8
         }
       ]
@@ -21,33 +21,36 @@ locals {
           newbits = 11
         },
         {
-          name    = "ServerSubnet"
+          name    = "VmSubnet"
           newbits = 8
         }
       ]
     }
   }
 
-  subnets = {for k, v in local.address_manager : k => zipmap([for o in v.subnet_layout : o.name], cidrsubnets(v.address_space[0], [for o in v.subnet_layout : o.newbits]...))}
+  subnets = { for k, v in local.address_manager : k => zipmap([for o in v.subnet_layout : o.name], cidrsubnets(v.address_space[0], [for o in v.subnet_layout : o.newbits]...)) }
 
 }
 
 
 module "sites" {
-  for_each = local.subnets
-  source = "./modules/azure-internal"
-  vnet_location = each.key
-  vnet_rg = data.azurerm_resource_group.rg.name
-  cidr = local.address_manager[each.key].address_space
+  for_each                = local.subnets
+  source                  = "./modules/azure-internal"
+  vnet_location           = each.key
+  rg_name                 = data.azurerm_resource_group.rg.name
+  cidr                    = local.address_manager[each.key].address_space
   gateway_subnet_prefixes = [each.value["GatewaySubnet"]]
+  server_subnet_prefixes  = [each.value["VmSubnet"]]
 }
+
+
 
 resource "azurerm_virtual_network_gateway_connection" "east_west" {
   name                = "east-west-connection"
   location            = "eastus2"
   resource_group_name = data.azurerm_resource_group.rg.name
 
-  type                       = "Vnet2Vnet"
+  type                            = "Vnet2Vnet"
   virtual_network_gateway_id      = module.sites["eastus2"].gateway_id
   peer_virtual_network_gateway_id = module.sites["westus2"].gateway_id
 
@@ -60,7 +63,7 @@ resource "azurerm_virtual_network_gateway_connection" "west_east" {
   location            = "westus2"
   resource_group_name = data.azurerm_resource_group.rg.name
 
-  type                       = "Vnet2Vnet"
+  type                            = "Vnet2Vnet"
   virtual_network_gateway_id      = module.sites["westus2"].gateway_id
   peer_virtual_network_gateway_id = module.sites["eastus2"].gateway_id
 

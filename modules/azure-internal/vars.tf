@@ -3,7 +3,7 @@ variable "vnet_location" {
   description = "Location for the site vnet"
 }
 
-variable "vnet_rg" {
+variable "rg_name" {
   type        = string
   description = "Resource group name for the site vnet"
 }
@@ -16,4 +16,9 @@ variable "cidr" {
 variable "gateway_subnet_prefixes" {
   type        = list(string)
   description = "CIDR for the site vnet gateway subnet"
+}
+
+variable "vm_subnet_prefixes" {
+  type        = list(string)
+  description = "CIDR for the site vnet vm subnet"
 }
