@@ -26,6 +26,8 @@ resource "azurerm_public_ip" "gateway" {
   sku                     = "Standard"
   allocation_method       = "Static"
   idle_timeout_in_minutes = 15
+
+  zones = ["1", "2", "3"]
 }
 
 resource "azurerm_virtual_network_gateway" "gateway" {
