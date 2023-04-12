@@ -14,3 +14,32 @@ resource "azurerm_subnet" "gateway" {
   address_prefixes     = var.gateway_subnet_prefixes
   # This switches on cidr size because of existing subnet builds
 }
+
+resource "azurerm_public_ip" "gateway" {
+  name                = "${azurerm_virtual_network.vnet.name}-vgw-pip"
+  resource_group_name = var.vnet_rg
+  location            = var.region
+
+  # The configuration of the public IP resource determines whether the gateway is zone-redundant, or zonal.
+  # A Standard SKU without specifying an availability zone allows the gateway to be zone-redundant and
+  # span across all three zones.
+  sku                     = "Standard"
+  allocation_method       = "Static"
+  idle_timeout_in_minutes = 15
+}
+
+resource "azurerm_virtual_network_gateway" "gateway" {
+  name                = "${azurerm_virtual_network.vnet.name}-vgw"
+  resource_group_name = var.vnet_rg
+  location            = var.region
+
+  type       = "Vpn"
+  sku        = "VpnGw2AZ"
+  vpn_type   = "RouteBased"
+  enable_bgp = false
+
+  ip_configuration {
+    subnet_id            = azurerm_subnet.gateway.id
+    public_ip_address_id = azurerm_public_ip.gateway.id
+  }
+}
