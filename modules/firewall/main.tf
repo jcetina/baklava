@@ -28,7 +28,7 @@ resource "azurerm_firewall_policy" "policy" {
 }
 
 resource "azurerm_firewall_policy_rule_collection_group" "first" {
-  name               = "${azurerm_firewall_policy.name}-rcg-first"
+  name               = "${azurerm_firewall_policy.policy.name}-rcg-first"
   firewall_policy_id = azurerm_firewall_policy.policy.id
   priority           = 100
 
