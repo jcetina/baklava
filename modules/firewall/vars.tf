@@ -24,7 +24,7 @@ variable "subnet_id" {
   description = "Subnet ID for the firewall"
 }
 
-var "breakglass" {
+variable "breakglass" {
   type        = bool
   description = "Allow all traffic through the firewall"
   default     = false
