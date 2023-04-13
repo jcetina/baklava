@@ -37,12 +37,15 @@ resource "azurerm_firewall_policy_rule_collection_group" "first" {
     name     = "breakglass"
     priority = 100
     action   = "Allow"
-    rule {
-      name                  = "AllowAll"
-      protocols             = ["Any"]
-      source_addresses      = ["*"]
-      destination_addresses = ["*"]
-      destination_ports     = ["1-65535"]
+    dynamic "rule" {
+      count = var.breakglass ? 1 : 0
+      content {
+        name                  = "AllowAll"
+        protocols             = ["Any"]
+        source_addresses      = ["*"]
+        destination_addresses = ["*"]
+        destination_ports     = ["1-65535"]
+      }
     }
   }
 
