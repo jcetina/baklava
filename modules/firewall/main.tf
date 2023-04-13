@@ -15,7 +15,7 @@ resource "azurerm_firewall" "firewall" {
 resource "azurerm_public_ip" "firewall_ip" {
   name                = "${var.fw_name}-pip"
   location            = var.location
-  resource_group_name = var.resource_group_name
+  resource_group_name = var.rg_name
   allocation_method   = "Static"
   sku                 = "Standard"
   zones               = var.zones
@@ -24,7 +24,7 @@ resource "azurerm_public_ip" "firewall_ip" {
 resource "azurerm_firewall_policy" "policy" {
   name                = "${var.fw_name}-policy"
   location            = var.location
-  resource_group_name = var.resource_group_name
+  resource_group_name = var.rg_name
 }
 
 resource "azurerm_firewall_policy_rule_collection_group" "first" {
