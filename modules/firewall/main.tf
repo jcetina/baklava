@@ -33,7 +33,6 @@ resource "azurerm_firewall_policy_rule_collection_group" "first" {
   priority           = 100
 
   network_rule_collection {
-    count    = var.breakglass ? 1 : 0
     name     = "breakglass"
     priority = 100
     action   = "Allow"
