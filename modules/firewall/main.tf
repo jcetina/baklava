@@ -38,7 +38,7 @@ resource "azurerm_firewall_policy_rule_collection_group" "first" {
     priority = 100
     action   = "Allow"
     dynamic "rule" {
-      count = var.breakglass ? 1 : 0
+      for_each = var.breakglass ? ["*"] : []
       content {
         name                  = "AllowAll"
         protocols             = ["Any"]
