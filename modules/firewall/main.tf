@@ -27,8 +27,9 @@ resource "azurerm_firewall_policy" "policy" {
   resource_group_name = var.rg_name
 }
 
-resource "azurerm_firewall_policy_rule_collection_group" "first" {
-  name               = "${azurerm_firewall_policy.policy.name}-rcg-first"
+resource "azurerm_firewall_policy_rule_collection_group" "breakglass" {
+  count              = var.breakglass ? 1 : 0
+  name               = "${azurerm_firewall_policy.policy.name}-rcg-breakglass"
   firewall_policy_id = azurerm_firewall_policy.policy.id
   priority           = 100
 
@@ -36,15 +37,12 @@ resource "azurerm_firewall_policy_rule_collection_group" "first" {
     name     = "breakglass"
     priority = 100
     action   = "Allow"
-    dynamic "rule" {
-      for_each = var.breakglass ? ["*"] : []
-      content {
-        name                  = "AllowAll"
-        protocols             = ["Any"]
-        source_addresses      = ["*"]
-        destination_addresses = ["*"]
-        destination_ports     = ["1-65535"]
-      }
+    rule {
+      name                  = "AllowAll"
+      protocols             = ["Any"]
+      source_addresses      = ["*"]
+      destination_addresses = ["*"]
+      destination_ports     = ["1-65535"]
     }
   }
 
