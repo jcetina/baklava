@@ -22,3 +22,8 @@ variable "vm_subnet_prefixes" {
   type        = list(string)
   description = "CIDR for the site vnet vm subnet"
 }
+
+variable "firewall_subnet_prefixes" {
+  type        = list(string)
+  description = "CIDR for the site vnet firewall subnet"
+}

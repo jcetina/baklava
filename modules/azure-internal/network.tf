@@ -22,6 +22,13 @@ resource "azurerm_subnet" "vm" {
   address_prefixes     = var.vm_subnet_prefixes
 }
 
+resource "azurerm_subnet" "firewall" {
+  name                 = "AzureFirewallSubnet"
+  resource_group_name  = var.rg_name
+  virtual_network_name = azurerm_virtual_network.vnet.name
+  address_prefixes     = var.firewall_subnet_prefixes
+}
+
 resource "azurerm_public_ip" "gateway" {
   name                = "${azurerm_virtual_network.vnet.name}-vgw-pip"
   resource_group_name = var.rg_name
