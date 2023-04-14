@@ -5,8 +5,9 @@ module "eastus2-firewall" {
   rg_name                        = data.azurerm_resource_group.rg.name
   subnet_id                      = module.sites["eastus2"].firewall_subnet_id
   zones                          = ["1", "2", "3"]
-  breakglass                     = true
+  breakglass                     = false
   user_allowed_application_rules = local.user_allowed_application_rules
+  user_allowed_network_rules     = local.user_allowed_network_rules
 }
 
 locals {
@@ -34,7 +35,7 @@ locals {
 
   user_allowed_network_rules = [
     {
-      name                  = "AllowGoogleDotCom"
+      name                  = "AllowICMP"
       protocols             = ["ICMP"]
       source_addresses      = ["*"]
       destination_addresses = ["*"]
