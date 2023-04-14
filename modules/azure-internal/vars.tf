@@ -27,3 +27,14 @@ variable "firewall_subnet_prefixes" {
   type        = list(string)
   description = "CIDR for the site vnet firewall subnet"
 }
+
+variable "firewall_private_ip" {
+  type        = string
+  description = "Private IP for the site firewall"
+}
+
+variable "enable_firewall" {
+  type        = bool
+  description = "Enable the site firewall"
+  default     = false
+}
