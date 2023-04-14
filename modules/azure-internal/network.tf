@@ -60,13 +60,13 @@ resource "azurerm_virtual_network_gateway" "gateway" {
   }
 }
 
-resource "azurerm_route_table" "stamp_to_dotcom_via_firewall" {
-  name                = "stamp-to-dotcom"
+resource "azurerm_route_table" "for_every_subnet_but_vnet_gw" {
+  name                = "for-every-subnet-but-vnet-gw"
   resource_group_name = var.rg_name
   location            = var.vnet_location
 
   route {
-    name           = "local-subnets-no-firewall"
+    name           = "local-vnet-no-firewall"
     address_prefix = var.cidr[0]
     next_hop_type  = "VnetLocal"
   }
@@ -90,27 +90,27 @@ resource "azurerm_route_table" "stamp_to_dotcom_via_firewall" {
   }
 }
 
-resource "azurerm_route_table" "dotcom_to_stamp_via_firewall_from_vnet_gateway" {
-  name                = "dotcom-to-stamp"
+resource "azurerm_route_table" "for_vnet_gw" {
+  name                = "for-vnet-gw"
   resource_group_name = var.rg_name
   location            = var.vnet_location
 
   route {
-    name           = "to-local-subnets-from-vnet-gateway"
+    name           = "local-vnet-to-firewall"
     address_prefix = var.cidr[0]
     next_hop_type  = "var.firewall_private_ip"
   }
 
 }
 
-resource "azurerm_subnet_route_table_association" "stamp_to_dotcom_via_firewall" {
+resource "azurerm_subnet_route_table_association" "for_every_subnet_but_vnet_gw" {
   count          = var.enable_firewall ? 1 : 0
   subnet_id      = azurerm_subnet.vm.id
-  route_table_id = azurerm_route_table.stamp_to_dotcom_via_firewall.id
+  route_table_id = azurerm_route_table.for_every_subnet_but_vnet_gw.id
 }
 
-resource "azurerm_subnet_route_table_association" "stamp_to_dotcom_via_firewall" {
+resource "azurerm_subnet_route_table_association" "for_vnet_gw" {
   count          = var.enable_firewall ? 1 : 0
   subnet_id      = azurerm_subnet.gateway.id
-  route_table_id = azurerm_route_table.dotcom_to_stamp_via_firewall_from_vnet_gateway.id
+  route_table_id = azurerm_route_table.for_vnet_gw.id
 }
