@@ -78,7 +78,7 @@ resource "azurerm_firewall_policy_rule_collection_group" "user_rule_collection" 
     }
   }
 
-  dynamic "application_rule_collection" {
+  dynamic "network_rule_collection" {
     for_each = length(var.user_allowed_network_rules) > 0 ? ["create"] : []
     content {
       name     = "user_allowed_network_rules"
