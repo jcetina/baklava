@@ -48,8 +48,8 @@ resource "azurerm_firewall_policy_rule_collection_group" "breakglass" {
 
 }
 
-resource "azurerm_firewall_policy_rule_collection_group" "user_rule_collection" {
-  count              = length(var.user_allowed_network_rules) + length(var.user_allowed_application_rules) > 0 ? 1 : 0
+resource "azurerm_firewall_policy_rule_collection_group" "user_app_rule_collection" {
+  count              = length(var.user_allowed_application_rules) > 0 ? 1 : 0
   name               = "${azurerm_firewall_policy.policy.name}-rcg-user-app-rules"
   firewall_policy_id = azurerm_firewall_policy.policy.id
   priority           = 500
@@ -58,7 +58,7 @@ resource "azurerm_firewall_policy_rule_collection_group" "user_rule_collection" 
     for_each = length(var.user_allowed_application_rules) > 0 ? ["create"] : []
     content {
       name     = "user_allowed_application_rules"
-      priority = 101
+      priority = 100
       action   = "Allow"
       dynamic "rule" {
         for_each = var.user_allowed_application_rules
@@ -77,6 +77,14 @@ resource "azurerm_firewall_policy_rule_collection_group" "user_rule_collection" 
       }
     }
   }
+
+}
+
+resource "azurerm_firewall_policy_rule_collection_group" "user_net_rule_collection" {
+  count              = length(var.user_allowed_network_rules) > 0 ? 1 : 0
+  name               = "${azurerm_firewall_policy.policy.name}-rcg-user-net-rules"
+  firewall_policy_id = azurerm_firewall_policy.policy.id
+  priority           = 501
 
   dynamic "network_rule_collection" {
     for_each = length(var.user_allowed_network_rules) > 0 ? ["create"] : []
