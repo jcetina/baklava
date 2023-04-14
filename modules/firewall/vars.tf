@@ -29,3 +29,29 @@ variable "breakglass" {
   description = "Allow all traffic through the firewall"
   default     = false
 }
+
+variable "user_allowed_network_rules" {
+  type = list(object({
+    name                  = string
+    protocols             = list(string)
+    source_addresses      = list(string)
+    destination_addresses = list(string)
+    destination_ports     = list(string)
+  }))
+  description = "Application rule collection for the firewall rule collection group"
+  default     = []
+}
+
+variable "user_allowed_application_rules" {
+  type = list(object({
+    name = string
+    protocols = list(object({
+      type = string
+      port = number
+    }))
+    source_addresses  = list(string)
+    destination_fqdns = list(string)
+  }))
+  description = "Application rule collection for the firewall rule collection group"
+  default     = []
+}
