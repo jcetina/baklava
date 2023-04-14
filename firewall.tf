@@ -23,6 +23,13 @@ locals {
       source_addresses  = ["*"]
       destination_fqdns = ["*.github.com", "github.com"]
     }
+    ,
+    {
+      name              = "AllowMicrosoftDotCom"
+      protocols         = [{ type = "Https", port = 443 }]
+      source_addresses  = ["*"]
+      destination_fqdns = ["*.microsoft.com", "microsoft.com"]
+    }
   ]
 
   user_allowed_network_rules = [
