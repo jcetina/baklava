@@ -72,21 +72,24 @@ resource "azurerm_route_table" "for_every_subnet_but_vnet_gw" {
   }
 
   route {
-    name           = "10-8-to-firewall"
-    address_prefix = "10.0.0.0/8"
-    next_hop_type  = var.firewall_private_ip
+    name                        = "10-8-to-firewall"
+    address_prefix              = "10.0.0.0/8"
+    next_hop_type               = "VirtualAppliance"
+    next_next_hop_in_ip_address = "var.firewall_private_ip"
   }
 
   route {
-    name           = "172-16-to-firewall"
-    address_prefix = "172.16.0.0/12"
-    next_hop_type  = var.firewall_private_ip
+    name                        = "172-16-to-firewall"
+    address_prefix              = "172.16.0.0/12"
+    next_hop_type               = "VirtualAppliance"
+    next_next_hop_in_ip_address = "var.firewall_private_ip"
   }
 
   route {
-    name           = "192-168-to-firewall"
-    address_prefix = "192.168.0.0/24"
-    next_hop_type  = var.firewall_private_ip
+    name                        = "192-168-to-firewall"
+    address_prefix              = "192.168.0.0/24"
+    next_hop_type               = "VirtualAppliance"
+    next_next_hop_in_ip_address = "var.firewall_private_ip"
   }
 }
 
@@ -96,9 +99,10 @@ resource "azurerm_route_table" "for_vnet_gw" {
   location            = var.vnet_location
 
   route {
-    name           = "local-vnet-to-firewall"
-    address_prefix = var.cidr[0]
-    next_hop_type  = "var.firewall_private_ip"
+    name                        = "local-vnet-to-firewall"
+    address_prefix              = var.cidr[0]
+    next_hop_type               = "VirtualAppliance"
+    next_next_hop_in_ip_address = "var.firewall_private_ip"
   }
 
 }
