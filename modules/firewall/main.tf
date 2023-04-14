@@ -58,7 +58,7 @@ resource "azurerm_firewall_policy_rule_collection_group" "user_rule_collection" 
     for_each = length(var.user_allowed_application_rules) > 0 ? ["create"] : []
     content {
       name     = "user_allowed_application_rules"
-      priority = 100
+      priority = 101
       action   = "Allow"
       dynamic "rule" {
         for_each = var.user_allowed_application_rules
@@ -82,7 +82,7 @@ resource "azurerm_firewall_policy_rule_collection_group" "user_rule_collection" 
     for_each = length(var.user_allowed_network_rules) > 0 ? ["create"] : []
     content {
       name     = "user_allowed_network_rules"
-      priority = 101
+      priority = 100
       action   = "Allow"
       dynamic "rule" {
         for_each = var.user_allowed_network_rules
