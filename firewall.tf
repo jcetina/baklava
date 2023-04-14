@@ -19,13 +19,6 @@ locals {
       destination_fqdns = ["*.google.com", "google.com"]
     },
     {
-      name              = "AllowGitHubDotCom"
-      protocols         = [{ type = "Https", port = 443 }]
-      source_addresses  = ["*"]
-      destination_fqdns = ["*.github.com", "github.com"]
-    }
-    ,
-    {
       name              = "AllowMicrosoftDotCom"
       protocols         = [{ type = "Https", port = 443 }]
       source_addresses  = ["*"]
@@ -36,7 +29,7 @@ locals {
   user_allowed_network_rules = [
     {
       name                  = "AllowICMP"
-      protocols             = ["ICMP"]
+      protocols             = ["ICMP", "TCP", "UDP"]
       source_addresses      = ["*"]
       destination_addresses = ["*"]
       destination_ports     = ["*"]
