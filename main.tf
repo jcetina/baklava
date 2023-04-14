@@ -50,7 +50,7 @@ module "sites" {
   gateway_subnet_prefixes  = [each.value["GatewaySubnet"]]
   vm_subnet_prefixes       = [each.value["VmSubnet"]]
   firewall_subnet_prefixes = [each.value["AzureFirewallSubnet"]]
-  firewall_private_ip      = module.eastus2-firewall.private_ip
+  firewall_private_ip      = module.eastus2-firewall.firewall_private_ip
 }
 
 
