@@ -25,6 +25,12 @@ resource "azurerm_firewall_policy" "policy" {
   name                = "${var.fw_name}-policy"
   location            = var.location
   resource_group_name = var.rg_name
+
+  insights {
+    enabled = true
+    default_log_analytics_workspace_id = azurerm_log_analytics_workspace.firewall_log_workspace.id
+    retention_in_days = 30
+  }
 }
 
 resource "azurerm_firewall_policy_rule_collection_group" "breakglass" {
@@ -104,4 +110,12 @@ resource "azurerm_firewall_policy_rule_collection_group" "user_net_rule_collecti
       }
     }
   }
+}
+
+resource "azurerm_log_analytics_workspace" "firewall_log_workspace" {
+  name                = "${var.fw_name}-log-workspace"
+  location            = var.location
+  resource_group_name = var.rg_name
+  sku                 = "PerGB2018"
+  retention_in_days   = 30
 }
