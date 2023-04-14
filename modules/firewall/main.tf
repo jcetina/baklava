@@ -48,60 +48,60 @@ resource "azurerm_firewall_policy_rule_collection_group" "breakglass" {
 
 }
 
-# resource "azurerm_firewall_policy_rule_collection_group" "user_app_rule_collection" {
-#   count              = length(var.user_allowed_application_rules) > 0 ? 1 : 0
-#   name               = "${azurerm_firewall_policy.policy.name}-rcg-user-app-rules"
-#   firewall_policy_id = azurerm_firewall_policy.policy.id
-#   priority           = 500
+resource "azurerm_firewall_policy_rule_collection_group" "user_app_rule_collection" {
+  count              = length(var.user_allowed_application_rules) > 0 ? 1 : 0
+  name               = "${azurerm_firewall_policy.policy.name}-rcg-user-app-rules"
+  firewall_policy_id = azurerm_firewall_policy.policy.id
+  priority           = 500
 
-#   dynamic "application_rule_collection" {
-#     for_each = length(var.user_allowed_application_rules) > 0 ? ["create"] : []
-#     content {
-#       name     = "user_allowed_application_rules"
-#       priority = 100
-#       action   = "Allow"
-#       dynamic "rule" {
-#         for_each = var.user_allowed_application_rules
-#         content {
-#           name              = rule.value.name
-#           source_addresses  = rule.value.source_addresses
-#           destination_fqdns = rule.value.destination_fqdns
-#           dynamic "protocols" {
-#             for_each = rule.value.protocols
-#             content {
-#               type = protocols.value.type
-#               port = protocols.value.port
-#             }
-#           }
-#         }
-#       }
-#     }
-#   }
+  dynamic "application_rule_collection" {
+    for_each = length(var.user_allowed_application_rules) > 0 ? ["create"] : []
+    content {
+      name     = "user_allowed_application_rules"
+      priority = 100
+      action   = "Allow"
+      dynamic "rule" {
+        for_each = var.user_allowed_application_rules
+        content {
+          name              = rule.value.name
+          source_addresses  = rule.value.source_addresses
+          destination_fqdns = rule.value.destination_fqdns
+          dynamic "protocols" {
+            for_each = rule.value.protocols
+            content {
+              type = protocols.value.type
+              port = protocols.value.port
+            }
+          }
+        }
+      }
+    }
+  }
 
-# }
+}
 
-# resource "azurerm_firewall_policy_rule_collection_group" "user_net_rule_collection" {
-#   count              = length(var.user_allowed_network_rules) > 0 ? 1 : 0
-#   name               = "${azurerm_firewall_policy.policy.name}-rcg-user-net-rules"
-#   firewall_policy_id = azurerm_firewall_policy.policy.id
-#   priority           = 501
+resource "azurerm_firewall_policy_rule_collection_group" "user_net_rule_collection" {
+  count              = length(var.user_allowed_network_rules) > 0 ? 1 : 0
+  name               = "${azurerm_firewall_policy.policy.name}-rcg-user-net-rules"
+  firewall_policy_id = azurerm_firewall_policy.policy.id
+  priority           = 501
 
-#   dynamic "network_rule_collection" {
-#     for_each = length(var.user_allowed_network_rules) > 0 ? ["create"] : []
-#     content {
-#       name     = "user_allowed_network_rules"
-#       priority = 100
-#       action   = "Allow"
-#       dynamic "rule" {
-#         for_each = var.user_allowed_network_rules
-#         content {
-#           name                  = rule.value.name
-#           protocols             = rule.value.protocols
-#           source_addresses      = rule.value.source_addresses
-#           destination_addresses = rule.value.destination_addresses
-#           destination_ports     = rule.value.destination_ports
-#         }
-#       }
-#     }
-#   }
-# }
+  dynamic "network_rule_collection" {
+    for_each = length(var.user_allowed_network_rules) > 0 ? ["create"] : []
+    content {
+      name     = "user_allowed_network_rules"
+      priority = 100
+      action   = "Allow"
+      dynamic "rule" {
+        for_each = var.user_allowed_network_rules
+        content {
+          name                  = rule.value.name
+          protocols             = rule.value.protocols
+          source_addresses      = rule.value.source_addresses
+          destination_addresses = rule.value.destination_addresses
+          destination_ports     = rule.value.destination_ports
+        }
+      }
+    }
+  }
+}
