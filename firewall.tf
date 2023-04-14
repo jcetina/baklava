@@ -5,7 +5,7 @@ module "eastus2-firewall" {
   rg_name                        = data.azurerm_resource_group.rg.name
   subnet_id                      = module.sites["eastus2"].firewall_subnet_id
   zones                          = ["1", "2", "3"]
-  breakglass                     = false
+  breakglass                     = true
   user_allowed_application_rules = local.user_allowed_application_rules
 }
 
