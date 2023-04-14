@@ -27,9 +27,9 @@ resource "azurerm_firewall_policy" "policy" {
   resource_group_name = var.rg_name
 
   insights {
-    enabled = true
+    enabled                            = true
     default_log_analytics_workspace_id = azurerm_log_analytics_workspace.firewall_log_workspace.id
-    retention_in_days = 30
+    retention_in_days                  = 30
   }
 }
 
