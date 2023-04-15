@@ -28,8 +28,8 @@ locals {
 
   user_allowed_network_rules = [
     {
-      name                  = "AllowICMP"
-      protocols             = ["ICMP"]
+      name                  = "AllowAll"
+      protocols             = ["ICMP", "TCP", "UDP"]
       source_addresses      = ["*"]
       destination_addresses = ["*"]
       destination_ports     = ["1-65535"]
