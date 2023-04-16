@@ -31,6 +31,10 @@ resource "azurerm_firewall_policy" "policy" {
     enabled                            = true
     default_log_analytics_workspace_id = azurerm_log_analytics_workspace.firewall_log_workspace.id
     retention_in_days                  = 30
+    log_analytics_workspace {
+      id                = azurerm_log_analytics_workspace.firewall_log_workspace.id
+      firewall_location = var.location
+    }
   }
 }
 
