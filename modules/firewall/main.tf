@@ -5,6 +5,7 @@ resource "azurerm_firewall" "firewall" {
   sku_name            = "AZFW_VNet"
   sku_tier            = "Standard"
   zones               = var.zones
+  firewall_policy_id  = azurerm_firewall_policy.policy.id
   ip_configuration {
     name                 = "configuration"
     subnet_id            = var.subnet_id
