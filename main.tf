@@ -51,7 +51,7 @@ module "sites" {
   vm_subnet_prefixes       = [each.value["VmSubnet"]]
   firewall_subnet_prefixes = [each.value["AzureFirewallSubnet"]]
   firewall_private_ip      = module.eastus2-firewall.firewall_private_ip
-  enable_firewall          = each.key == "eastus2" ? false : false
+  enable_firewall          = each.key == "eastus2" ? true : false
 }
 
 
