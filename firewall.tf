@@ -29,10 +29,10 @@ locals {
   user_allowed_network_rules = [
     {
       name                  = "AllowAll"
-      protocols             = ["ICMP", "TCP", "UDP"]
+      protocols             = ["Any"]
       source_addresses      = ["*"]
       destination_addresses = ["*"]
-      destination_ports     = ["1-65535"]
+      destination_ports     = ["*"]
     }
   ]
 }

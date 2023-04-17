@@ -79,6 +79,13 @@ resource "azurerm_route_table" "for_every_subnet_but_vnet_gw" {
   }
 
   route {
+    name                   = "10-1-16-to-firewall"
+    address_prefix         = "10.1.0.0/16"
+    next_hop_type          = "VirtualAppliance"
+    next_hop_in_ip_address = var.firewall_private_ip
+  }
+
+  route {
     name                   = "172-16-to-firewall"
     address_prefix         = "172.16.0.0/12"
     next_hop_type          = "VirtualAppliance"
