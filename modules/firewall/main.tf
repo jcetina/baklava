@@ -116,15 +116,3 @@ resource "azurerm_log_analytics_workspace" "firewall_log_workspace" {
   sku                 = "PerGB2018"
   retention_in_days   = 30
 }
-
-resource "azurerm_network_interface" "nic" {
-  name                = "dummy-nic"
-  location            = var.location
-  resource_group_name = var.rg_name
-
-  ip_configuration {
-    name                          = "internal"
-    subnet_id                     = var.subnet_id
-    private_ip_address_allocation = "Dynamic"
-  }
-}
