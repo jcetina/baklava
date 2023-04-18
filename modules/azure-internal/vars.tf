@@ -38,3 +38,13 @@ variable "enable_firewall" {
   description = "Enable the site firewall"
   default     = false
 }
+
+variable "additional_routes_to_firewall" {
+  type        = list(string)
+  description = "Additional routes to add to the site vnet route tables"
+  default     = []
+}
+
+locals {
+  additional_routes_to_firewall = [for r in var.additional_routes_to_firewall : r if r != var.cidr[0]]
+}

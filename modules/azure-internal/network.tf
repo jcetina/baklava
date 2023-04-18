@@ -91,6 +91,16 @@ resource "azurerm_route_table" "for_every_subnet_but_vnet_gw" {
     next_hop_type          = "VirtualAppliance"
     next_hop_in_ip_address = var.firewall_private_ip
   }
+
+  dynamic "route" {
+    for_each = range(length(local.additional_routes_to_firewall))
+    content {
+      name                   = "additional_route_${route.key}"
+      address_prefix         = local.additional_routes_to_firewall[route.key]
+      next_hop_type          = "VirtualAppliance"
+      next_hop_in_ip_address = var.firewall_private_ip
+    }
+  }
 }
 
 resource "azurerm_route_table" "for_vnet_gw" {

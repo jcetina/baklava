@@ -42,16 +42,17 @@ locals {
 
 
 module "sites" {
-  for_each                 = local.subnets
-  source                   = "./modules/azure-internal"
-  vnet_location            = each.key
-  rg_name                  = data.azurerm_resource_group.rg.name
-  cidr                     = local.address_manager[each.key].address_space
-  gateway_subnet_prefixes  = [each.value["GatewaySubnet"]]
-  vm_subnet_prefixes       = [each.value["VmSubnet"]]
-  firewall_subnet_prefixes = [each.value["AzureFirewallSubnet"]]
-  firewall_private_ip      = module.eastus2-firewall.firewall_private_ip
-  enable_firewall          = each.key == "eastus2" ? true : false
+  for_each                      = local.subnets
+  source                        = "./modules/azure-internal"
+  vnet_location                 = each.key
+  rg_name                       = data.azurerm_resource_group.rg.name
+  cidr                          = local.address_manager[each.key].address_space
+  gateway_subnet_prefixes       = [each.value["GatewaySubnet"]]
+  vm_subnet_prefixes            = [each.value["VmSubnet"]]
+  firewall_subnet_prefixes      = [each.value["AzureFirewallSubnet"]]
+  firewall_private_ip           = module.eastus2-firewall.firewall_private_ip
+  enable_firewall               = each.key == "eastus2" ? true : false
+  additional_routes_to_firewall = ["10.1.0.0/16"]
 }
 
 
