@@ -10,6 +10,10 @@ locals {
         {
           name    = "VmSubnet"
           newbits = 8
+        },
+        {
+          name    = "AzureFirewallSubnet"
+          newbits = 10
         }
       ]
     },
@@ -23,6 +27,10 @@ locals {
         {
           name    = "VmSubnet"
           newbits = 8
+        },
+        {
+          name    = "AzureFirewallSubnet"
+          newbits = 10
         }
       ]
     }
@@ -34,13 +42,17 @@ locals {
 
 
 module "sites" {
-  for_each                = local.subnets
-  source                  = "./modules/azure-internal"
-  vnet_location           = each.key
-  rg_name                 = data.azurerm_resource_group.rg.name
-  cidr                    = local.address_manager[each.key].address_space
-  gateway_subnet_prefixes = [each.value["GatewaySubnet"]]
-  vm_subnet_prefixes      = [each.value["VmSubnet"]]
+  for_each                      = local.subnets
+  source                        = "./modules/azure-internal"
+  vnet_location                 = each.key
+  rg_name                       = data.azurerm_resource_group.rg.name
+  cidr                          = local.address_manager[each.key].address_space
+  gateway_subnet_prefixes       = [each.value["GatewaySubnet"]]
+  vm_subnet_prefixes            = [each.value["VmSubnet"]]
+  firewall_subnet_prefixes      = [each.value["AzureFirewallSubnet"]]
+  firewall_private_ip           = module.eastus2-firewall.firewall_private_ip
+  enable_firewall               = each.key == "eastus2" ? true : false
+  additional_routes_to_firewall = ["10.1.0.0/16"]
 }
 
 
@@ -51,8 +63,8 @@ resource "azurerm_virtual_network_gateway_connection" "east_west" {
   resource_group_name = data.azurerm_resource_group.rg.name
 
   type                            = "Vnet2Vnet"
-  virtual_network_gateway_id      = module.sites["eastus2"].gateway_id
-  peer_virtual_network_gateway_id = module.sites["westus2"].gateway_id
+  virtual_network_gateway_id      = module.sites["eastus2"].vnet_gateway_id
+  peer_virtual_network_gateway_id = module.sites["westus2"].vnet_gateway_id
 
 
   shared_key = "4-v3ry-53cr37-1p53c-5h4r3d-k3y"
@@ -64,8 +76,8 @@ resource "azurerm_virtual_network_gateway_connection" "west_east" {
   resource_group_name = data.azurerm_resource_group.rg.name
 
   type                            = "Vnet2Vnet"
-  virtual_network_gateway_id      = module.sites["westus2"].gateway_id
-  peer_virtual_network_gateway_id = module.sites["eastus2"].gateway_id
+  virtual_network_gateway_id      = module.sites["westus2"].vnet_gateway_id
+  peer_virtual_network_gateway_id = module.sites["eastus2"].vnet_gateway_id
 
 
   shared_key = "4-v3ry-53cr37-1p53c-5h4r3d-k3y"

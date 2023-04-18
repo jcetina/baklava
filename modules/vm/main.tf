@@ -39,9 +39,6 @@ resource "azurerm_linux_virtual_machine" "vm" {
     version   = "latest"
   }
 
-  boot_diagnostics {
-    storage_account_uri = azurerm_storage_account.storage.primary_blob_endpoint
-  }
 }
 
 resource "azurerm_public_ip" "public_ip" {
@@ -52,24 +49,6 @@ resource "azurerm_public_ip" "public_ip" {
   allocation_method   = "Static"
   sku                 = "Standard"
   zones               = var.zones
-}
-
-resource "random_id" "random_id" {
-  keepers = {
-    # Generate a new ID only when a new resource group is defined
-    resource_group = var.rg_name
-  }
-
-  byte_length = 8
-}
-
-# Create storage account for boot diagnostics
-resource "azurerm_storage_account" "storage" {
-  name                     = "diag${random_id.random_id.hex}"
-  location                 = var.location
-  resource_group_name      = var.rg_name
-  account_tier             = "Standard"
-  account_replication_type = "LRS"
 }
 
 resource "azurerm_network_security_group" "nsg" {
@@ -85,6 +64,18 @@ resource "azurerm_network_security_group" "nsg" {
     protocol                   = "Tcp"
     source_port_range          = "*"
     destination_port_range     = "22"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+
+  security_rule {
+    name                       = "ICMP"
+    priority                   = 1002
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Icmp"
+    source_port_range          = "*"
+    destination_port_range     = "*"
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
